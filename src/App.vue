@@ -59,8 +59,18 @@ onBeforeMount(() => {
       clearValues();
       return;
     }
+    
 
     const activeIndex = blockValues.value.findIndex((i) => i.keyCode === e.keyCode);
+
+    if ((event.shiftKey) && (activeIndex!== -1)) {
+      activeCode.value = activeIndex;
+      blockValues.value[activeIndex].result = false;
+      setTimeout(() => {
+        blockValues.value[activeIndex].result = null;
+      }, 2000);
+      return
+    }
     if (activeIndex !== -1) {
       activeCode.value = activeIndex;
       blockValues.value[activeIndex].result = true;
@@ -87,9 +97,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div v-show="error" class="wrong-container">
-    <img class="wrong" src="./assets/wrong.png" />
-  </div>
+  
   <div v-if="loading" class="wrong-container">
     <img src="./assets/loading.gif" />
   </div>
@@ -101,6 +109,9 @@ onBeforeMount(() => {
       :key="`${item.answer}-${index}`"
     >
       <h1>{{ item.answer }}</h1>
+      <div v-show="item.result === false" class="wrong-container">
+      <img class="wrong" src="./assets/wrong.png" />
+    </div>
     </div>
   </div>
 </template>
@@ -140,6 +151,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  position: relative;
   padding: 4px;
   p {
     margin: 0;
@@ -170,7 +182,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.3);
   z-index: 100;
   .wrong {
     width: 300px;
