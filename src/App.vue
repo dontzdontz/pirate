@@ -45,14 +45,14 @@ onBeforeMount(() => {
       blockValues.value[activeCode.value].result = null;
     }
 
-    // space
-    if (e.keyCode === 32) {
-      error.value = true;
-      setTimeout(() => {
-        error.value = false;
-      }, 2000);
-      return;
-    }
+    // // space
+    // if (e.keyCode === 32) {
+    //   error.value = true;
+    //   setTimeout(() => {
+    //     error.value = false;
+    //   }, 2000);
+    //   return;
+    // }
 
     // enter
     if (e.keyCode === 13) {
