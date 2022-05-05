@@ -108,7 +108,7 @@ onBeforeMount(() => {
       v-for="(item, index) in blockValues"
       :key="`${item.answer}-${index}`"
     >
-      <h1>{{ item.answer }}</h1>
+      <h1 v-html="item.answer"></h1>
       <div v-show="item.result === false" class="wrong-container">
       <img class="wrong" src="./assets/wrong.png" />
     </div>
