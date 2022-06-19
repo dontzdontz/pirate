@@ -97,9 +97,6 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div v-if="loading" class="wrong-container">
-    <img src="./assets/loading.gif" alt="" />
-  </div>
   <div v-if="waiting" class="welcome">
     <img src="./assets/banner.png" alt="" />
   </div>
