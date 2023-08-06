@@ -1,96 +1,94 @@
 <script setup>
-import { getCurrentInstance, onBeforeMount, ref, onMounted, watch } from "vue";
-import Papa from "papaparse";
+import { onBeforeMount, ref, onMounted, watch } from "vue";
 import axios from "axios";
-let blockValues = ref([1, 2, 3]);
-const activeCode = ref();
-const loading = ref(true);
-const error = ref(false);
+const loading = ref(false);
 
+import pirate_2_b from "./assets/images/pirate_2_b.png";
+import pirate_0_b from "./assets/images/pirate_0_b.png";
+import pirate_0 from "./assets/images/pirate_0.png";
+import pirate_1_b from "./assets/images/pirate_1_b.png";
+import pirate_1 from "./assets/images/pirate_1.png";
+import pirate_2 from "./assets/images/pirate_2.png";
+
+const round = ref(1);
+const pirates = ref([
+  {
+    back: pirate_0_b,
+    front: pirate_0,
+    isTurn: false,
+  },
+  {
+    back: pirate_1_b,
+    front: pirate_1,
+    isTurn: false,
+  },
+  {
+    back: pirate_2_b,
+    front: pirate_2,
+    isTurn: false,
+  },
+]);
+
+const questions = ref([[], [], [], [], []]);
 axios
   .get(
-    "https://script.google.com/macros/s/AKfycbyPcbm2nt-cnA2zse5KHEIHFPi674wQx6WWdZwvf_CQJomge-7NC_RellTzhlX7eLjHXg/exec"
+    "https://sheets.googleapis.com/v4/spreadsheets/1XpAMwdU1gTYahErh1ny0k2a2TuLDhuIFvDE-s-hO0ag/values/0?alt=json&key=AIzaSyDR4LE-SY5jBNCMJ0HHgxJfgGd3amRyRmc"
   )
   .then((res) => {
-    const data = JSON.parse(res.data);
-    blockValues.value = Object.keys(data).map((i) => {
-      return {
-        answer: i,
-        keyCode: data[i],
-        result: null,
-      };
-    });
-
-    blockValues.value.sort((start, next) => {
-      const order = [
-        49, 50, 51, 52, 81, 87, 69, 82, 65, 83, 68, 70, 90, 88, 67, 86,
-      ];
-      return order.indexOf(start.keyCode) - order.indexOf(next.keyCode);
-    });
+    questions.value = res.data.values.reduce((acc, cur) => {
+      const [first, ...rest] = cur;
+      return [...acc, [rest]];
+    }, []);
 
     loading.value = false;
+    console.log(questions.value);
   });
 
-const clearValues = () => {
-  blockValues.value.forEach((i) => (i.result = null));
-};
-
 const waiting = ref(true);
-const cancelWaiting = () => {
-  waiting.value = false;
+
+const turnAllBack = () => {
+  pirates.value.forEach((i) => (i.isTurn = false));
 };
 
 onBeforeMount(() => {
   window.addEventListener("keydown", (e) => {
+    // enter
+    if (e.keyCode === 13) {
+      if (waiting.value) {
+        waiting.value = false;
+        return;
+      }
+      if (round.value < 5) {
+        turnAllBack();
+        round.value += 1;
+      } else {
+        waiting.value = true;
+      }
+    }
+
+    // console.log(e.keyCode);
     if (e.keyCode === 27) {
       window.close();
       return;
     }
 
-    // backspace
-    if (e.keyCode === 8) {
-      blockValues.value[activeCode.value].result = null;
-    }
+    if (waiting.value) return;
 
-    // // space
-    if (e.keyCode === 32) {
+    // 0: resume game
+    if (e.keyCode === 48 || e.keyCode === 96) {
       waiting.value = true;
-      clearValues();
-      return;
-    }
-    // if (e.keyCode === 32) {
-    //   error.value = true;
-    //   setTimeout(() => {
-    //     error.value = false;
-    //   }, 2000);
-    //   return;
-    // }
-
-    // enter
-    if (e.keyCode === 13) {
-      if (waiting.value) {
-        cancelWaiting();
-        return;
-      }
-      clearValues();
       return;
     }
 
-    const activeIndex = blockValues.value.findIndex(
-      (i) => i.keyCode === e.keyCode
-    );
-
-    if (event.shiftKey && activeIndex !== -1) {
-      activeCode.value = activeIndex;
-      blockValues.value[activeIndex].result = false;
-      setTimeout(() => {
-        blockValues.value[activeIndex].result = null;
-      }, 2000);
-      return;
+    // 1: 49 2:50 3:51
+    if (e.keyCode === 49 || e.keyCode === 97) {
+      pirates.value[0].isTurn = !pirates.value[0].isTurn;
     }
-    if (activeIndex !== -1) {
-      activeCode.value = activeIndex;
-      blockValues.value[activeIndex].result = true;
+    if (e.keyCode === 50 || e.keyCode === 98) {
+      pirates.value[1].isTurn = !pirates.value[1].isTurn;
+    }
+    if (e.keyCode === 51 || e.keyCode === 99) {
+      pirates.value[2].isTurn = !pirates.value[2].isTurn;
     }
   });
 });
@@ -101,17 +99,12 @@ onBeforeMount(() => {
     <img src="./assets/banner.png" alt="" />
   </div>
   <div v-if="!loading && !waiting" class="container">
-    <div
-      class="block"
-      :class="
-        item.result === true ? 'correct' : item.result === false ? 'wrong' : ''
-      "
-      v-for="(item, index) in blockValues"
-      :key="`${item.answer}-${index}`"
-    >
-      <h1 v-html="item.answer"></h1>
-      <div v-show="item.result === false" class="wrong-container">
-        <img class="wrong" src="./assets/wrong.png" />
+    <h1 class="">ROUND {{ round }}</h1>
+    <div class="img-container">
+      <div class="img-wrapper" v-for="(i, index) in pirates">
+        <img v-show="!i.isTurn" :src="i.back" />
+        <img v-show="i.isTurn" :src="i.front" />
+        <span v-show="i.isTurn">{{ questions[round - 1][0][index] }}</span>
       </div>
     </div>
   </div>
@@ -144,12 +137,40 @@ body {
   margin: auto;
   width: 90vw;
   height: auto;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(max-content, 300px));
-  grid-template-rows: repeat(4, minmax(max-content, 180px));
-  // grid-template-rows: repeat(4, 300px);
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .img-container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(min-content, 500px));
+    gap: 8px;
+    justify-content: center;
+
+    .img-wrapper {
+      position: relative;
+      span {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 60%;
+        width: 60%;
+        font-size: 24px;
+        font-weight: bold;
+        color: #281f1d;
+      }
+    }
+  }
+  img {
+    width: 100%;
+  }
 }
 .block {
   background: url("assets/block.png");
