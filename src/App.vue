@@ -153,7 +153,7 @@ body {
     font-size: 8rem;
     font-weight: bold;
     color: rgb(80, 61, 61);
-    margin-bottom: 0;
+    margin: 0;
   }
 
   .img-container {
