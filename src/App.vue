@@ -7,29 +7,38 @@ import pirate_2_b from "./assets/images/pirate_2_b.png";
 import pirate_0_b from "./assets/images/pirate_0_b.png";
 import pirate_0 from "./assets/images/pirate_0.png";
 import pirate_1_b from "./assets/images/pirate_1_b.png";
+import pirate_3_b from "./assets/images/pirate_3_b.png";
 import pirate_1 from "./assets/images/pirate_1.png";
 import pirate_2 from "./assets/images/pirate_2.png";
+import pirate_3 from "./assets/images/pirate_3.png";
 
 const round = ref(1);
 const pirates = ref([
   {
     back: pirate_0_b,
     front: pirate_0,
+    bonus_back: pirate_3_b,
+    bonus_front: pirate_3,
     isTurn: false,
   },
   {
     back: pirate_1_b,
     front: pirate_1,
+    bonus_back: pirate_3_b,
+    bonus_front: pirate_3,
     isTurn: false,
   },
   {
     back: pirate_2_b,
     front: pirate_2,
+    bonus_back: pirate_3_b,
+    bonus_front: pirate_3,
     isTurn: false,
   },
 ]);
 
 const questions = ref([[], [], [], [], []]);
+const bonusIndices = ref([])
 axios
   .get(
     "https://sheets.googleapis.com/v4/spreadsheets/1XpAMwdU1gTYahErh1ny0k2a2TuLDhuIFvDE-s-hO0ag/values/0?alt=json&key=AIzaSyDR4LE-SY5jBNCMJ0HHgxJfgGd3amRyRmc"
@@ -37,14 +46,15 @@ axios
   .then((res) => {
     questions.value = res.data.values.reduce((acc, cur) => {
       const [first, ...rest] = cur;
-      return [...acc, [rest]];
+      bonusIndices.value.push(+rest[3])
+      return [...acc, [rest[0],rest[1],rest[2]]];
     }, []);
 
     loading.value = false;
     console.log(questions.value);
   });
 
-const waiting = ref(true);
+// const waiting = ref(true);
 
 const turnAllBack = () => {
   pirates.value.forEach((i) => (i.isTurn = false));
@@ -54,15 +64,11 @@ onBeforeMount(() => {
   window.addEventListener("keydown", (e) => {
     // enter
     if (e.keyCode === 13) {
-      if (waiting.value) {
-        waiting.value = false;
-        return;
-      }
       if (round.value < 5) {
         turnAllBack();
         round.value += 1;
-      } else {
-        waiting.value = true;
+      }  else {
+        round.value = 1
       }
     }
 
@@ -72,11 +78,9 @@ onBeforeMount(() => {
       return;
     }
 
-    if (waiting.value) return;
-
     // 0: resume game
     if (e.keyCode === 48 || e.keyCode === 96) {
-      waiting.value = true;
+      round.value = 1
       return;
     }
 
@@ -95,16 +99,19 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div v-if="waiting" class="welcome">
+  <!-- <div v-if="waiting" class="welcome">
     <img src="./assets/banner.png" alt="" />
-  </div>
-  <div v-if="!loading && !waiting" class="container">
+  </div> -->
+  <div v-if="!loading" class="container">
     <h1 class="">ROUND {{ round }}</h1>
     <div class="img-container">
       <div class="img-wrapper" v-for="(i, index) in pirates">
-        <img v-show="!i.isTurn" :src="i.back" />
-        <img v-show="i.isTurn" :src="i.front" />
-        <span v-show="i.isTurn">{{ questions[round - 1][0][index] }}</span>
+        <img v-show="!i.isTurn  && bonusIndices[round - 1] !== index +1" :src="i.back" />
+        <img v-show="i.isTurn  && bonusIndices[round - 1] !== index +1" :src="i.front" />
+
+        <img v-show="!i.isTurn && bonusIndices[round - 1] === index +1" :src="i.bonus_back" />
+        <img v-show="i.isTurn && bonusIndices[round - 1] === index +1" :src="i.bonus_front" />
+        <span v-if="i.isTurn">{{ questions[round - 1].length > 0 ? questions[round - 1][index] : '' }}</span>
       </div>
     </div>
   </div>
@@ -126,7 +133,7 @@ onBeforeMount(() => {
 body {
   background: url("assets/bg.png"); /* fallback for old browsers */
   background-size: cover;
-  // width: 100%;
+  width: 100%;
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -143,9 +150,9 @@ body {
   align-items: center;
 
   h1 {
-    font-size: 4rem;
+    font-size: 8rem;
     font-weight: bold;
-    color: #fff;
+    color: rgb(80, 61, 61);
   }
 
   .img-container {
@@ -160,9 +167,9 @@ body {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        top: 60%;
+        top: 52%;
         width: 60%;
-        font-size: 24px;
+        font-size: 8rem;
         font-weight: bold;
         color: #281f1d;
       }
