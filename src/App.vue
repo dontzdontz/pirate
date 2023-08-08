@@ -133,7 +133,7 @@ onBeforeMount(() => {
 body {
   background: url("assets/bg.png"); /* fallback for old browsers */
   background-size: cover;
-  width: 100%;
+  // width: 100%;
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -153,6 +153,7 @@ body {
     font-size: 8rem;
     font-weight: bold;
     color: rgb(80, 61, 61);
+    margin-bottom: 0;
   }
 
   .img-container {
