@@ -47,7 +47,7 @@ axios
     questions.value = res.data.values.reduce((acc, cur) => {
       const [first, ...rest] = cur;
       bonusIndices.value.push(+rest[3])
-      return [...acc, [rest[0],rest[1],rest[2]]];
+      return [...acc, [rest[0], rest[1], rest[2]]];
     }, []);
 
     loading.value = false;
@@ -67,7 +67,7 @@ onBeforeMount(() => {
       if (round.value < 5) {
         turnAllBack();
         round.value += 1;
-      }  else {
+      } else {
         round.value = 1
       }
     }
@@ -106,11 +106,11 @@ onBeforeMount(() => {
     <h1 class="">ROUND {{ round }}</h1>
     <div class="img-container">
       <div class="img-wrapper" v-for="(i, index) in pirates">
-        <img v-show="!i.isTurn  && bonusIndices[round - 1] !== index +1" :src="i.back" />
-        <img v-show="i.isTurn  && bonusIndices[round - 1] !== index +1" :src="i.front" />
+        <img v-show="!i.isTurn && bonusIndices[round - 1] !== index + 1" :src="i.back" />
+        <img v-show="i.isTurn && bonusIndices[round - 1] !== index + 1" :src="i.front" />
 
-        <img v-show="!i.isTurn && bonusIndices[round - 1] === index +1" :src="i.bonus_back" />
-        <img v-show="i.isTurn && bonusIndices[round - 1] === index +1" :src="i.bonus_front" />
+        <img v-show="!i.isTurn && bonusIndices[round - 1] === index + 1" :src="i.bonus_back" />
+        <img v-show="i.isTurn && bonusIndices[round - 1] === index + 1" :src="i.bonus_front" />
         <span v-if="i.isTurn">{{ questions[round - 1].length > 0 ? questions[round - 1][index] : '' }}</span>
       </div>
     </div>
@@ -131,7 +131,8 @@ onBeforeMount(() => {
 }
 
 body {
-  background: url("assets/bg.png"); /* fallback for old browsers */
+  background: url("assets/bg.png");
+  /* fallback for old browsers */
   background-size: cover;
   // width: 100%;
   height: 100vh;
@@ -164,22 +165,28 @@ body {
 
     .img-wrapper {
       position: relative;
+
       span {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        top: 52%;
+        top: 48%;
         width: 60%;
-        font-size: 8rem;
+        font-size: 6rem;
         font-weight: bold;
-        color: #281f1d;
+        color: #fff;
+
+        text-shadow: 5px 5px 0 #1d3760, -1px -1px 0 #1d3760, 1px -1px 0 #1d3760, -1px 1px 0 #1d3760, 1px 1px 0 #1d3760;
+        -webkit-text-stroke: 6px #1d3760;
       }
     }
   }
+
   img {
     width: 100%;
   }
 }
+
 .block {
   background: url("assets/block.png");
   background-size: contain;
@@ -191,11 +198,14 @@ body {
   flex-direction: column;
   position: relative;
   padding: 4px;
+
   p {
     margin: 0;
   }
+
   &.correct {
     position: relative;
+
     &::before {
       position: absolute;
       content: "";
@@ -207,6 +217,7 @@ body {
       height: 100%;
     }
   }
+
   h1 {
     margin: 0;
     font-size: 36px;
@@ -220,6 +231,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
+
   .wrong {
     width: 100%;
     animation: rubberBand 0.8s;
@@ -253,6 +265,7 @@ body {
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
+
   img {
     position: absolute;
     left: 50%;
@@ -262,15 +275,17 @@ body {
     animation: disappear 1.5s infinite;
   }
 }
+
 @keyframes disappear {
   0% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 1;
   }
-}
-</style>
+}</style>
