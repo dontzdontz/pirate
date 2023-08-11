@@ -111,7 +111,7 @@ onBeforeMount(() => {
 
         <img v-show="!i.isTurn && bonusIndices[round - 1] === index + 1" :src="i.bonus_back" />
         <img v-show="i.isTurn && bonusIndices[round - 1] === index + 1" :src="i.bonus_front" />
-        <span v-if="i.isTurn">{{ questions[round - 1].length > 0 ? questions[round - 1][index] : '' }}</span>
+        <span v-if="i.isTurn" :style="questions[round - 1][index].length > 5 ? { fontSize: '6vw'} : questions[round - 1][index].length >= 3 ? { fontSize: '9vw'} :{ fontSize: '12vw'}  ">{{ questions[round - 1].length > 0 ? questions[round - 1][index] : '' }}</span>
       </div>
     </div>
   </div>
@@ -159,7 +159,7 @@ body {
 
   .img-container {
     display: grid;
-    grid-template-columns: repeat(3, minmax(min-content, 500px));
+    grid-template-columns: repeat(3, 30vw);
     gap: 8px;
     justify-content: center;
 
@@ -169,10 +169,11 @@ body {
       span {
         position: absolute;
         left: 50%;
-        transform: translateX(-50%);
-        top: 54%;
-        width: 60%;
-        font-size: 8rem;
+        transform: translateX(-50%) translateY(-50%);
+        top: 65%;
+        width: 100%;
+        text-align: center;
+        font-size: 12vw;
         font-weight: bold;
         color: #fff;
 
