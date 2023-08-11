@@ -170,13 +170,13 @@ body {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        top: 48%;
+        top: 54%;
         width: 60%;
-        font-size: 6rem;
+        font-size: 8rem;
         font-weight: bold;
         color: #fff;
 
-        text-shadow: 5px 5px 0 #1d3760, -1px -1px 0 #1d3760, 1px -1px 0 #1d3760, -1px 1px 0 #1d3760, 1px 1px 0 #1d3760;
+        // text-shadow: 5px 5px 0 #1d3760, -1px -1px 0 #1d3760, 1px -1px 0 #1d3760, -1px 1px 0 #1d3760, 1px 1px 0 #1d3760;
         -webkit-text-stroke: 6px #1d3760;
       }
     }
