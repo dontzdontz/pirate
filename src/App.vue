@@ -131,7 +131,7 @@ onBeforeMount(() => {
 }
 
 body {
-  background: url("assets/bg.png");
+  background: url("assets/bg.JPG");
   /* fallback for old browsers */
   background-size: cover;
   // width: 100%;
