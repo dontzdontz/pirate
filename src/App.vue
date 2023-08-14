@@ -132,7 +132,7 @@ const isChinese = (str) => {
           v-if="i.isTurn"
           :style="
            questions[round - 1][index] === '𠢕' ?
-           {fontSize: '13vw' } :
+           {fontSize: '12vw' } :
             questions[round - 1][index].length > 5
               ? { fontSize: '5vw', color: '#1d3760', '-webkit-text-stroke': '0px' }
               : questions[round - 1][index].length >= 2
