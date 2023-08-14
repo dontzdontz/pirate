@@ -147,7 +147,7 @@ const isChinese = (str) => {
 </template>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
 #app {
   
   font-family: 'Noto Sans TC', sans-serif;
@@ -205,8 +205,8 @@ body {
         width: 100%;
         text-align: center;
         font-size: 12vw;
-        font-weight: 900;
-        color: #fff;
+        font-weight: 700;
+        color: #1d3760;
 
         // text-shadow: 5px 5px 0 #1d3760, -1px -1px 0 #1d3760, 1px -1px 0 #1d3760, -1px 1px 0 #1d3760, 1px 1px 0 #1d3760;
         -webkit-text-stroke: 6px #1d3760;
