@@ -131,6 +131,8 @@ const isChinese = (str) => {
         <span
           v-if="i.isTurn"
           :style="
+           questions[round - 1][index] === '𠢕' ?
+           {fontSize: '13vw' } :
             questions[round - 1][index].length > 5
               ? { fontSize: '5vw', color: '#1d3760', '-webkit-text-stroke': '0px' }
               : questions[round - 1][index].length >= 2
@@ -147,10 +149,10 @@ const isChinese = (str) => {
 </template>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
 #app {
   
-  font-family: 'Noto Sans TC', Arial, "Arial", sans-serif;
+  // font-family: Arial, "Arial", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -183,7 +185,7 @@ body {
 
   h1 {
     font-size: 8rem;
-    font-weight: 900;
+    font-weight: bold;
     color: rgb(80, 61, 61);
     margin: 0;
   }
@@ -205,11 +207,11 @@ body {
         width: 100%;
         text-align: center;
         font-size: 12vw;
-        font-weight: 700;
+        font-weight: bold;
         color: #1d3760;
 
         // text-shadow: 5px 5px 0 #1d3760, -1px -1px 0 #1d3760, 1px -1px 0 #1d3760, -1px 1px 0 #1d3760, 1px 1px 0 #1d3760;
-        -webkit-text-stroke: 6px #1d3760;
+        // -webkit-text-stroke: 6px #1d3760;
       }
     }
   }
