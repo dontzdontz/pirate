@@ -175,7 +175,7 @@ body {
 .container {
   margin: auto;
   width: 90vw;
-  height: auto;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -190,7 +190,7 @@ body {
 
   .img-container {
     display: grid;
-    grid-template-columns: repeat(3, 30vw);
+    grid-template-columns: repeat(3, 28vw);
     gap: 8px;
     justify-content: center;
 
