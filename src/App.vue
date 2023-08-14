@@ -158,15 +158,15 @@ const isChinese = (str) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  width: 100%;
 }
 
 body {
   background: url("./assets/bg.jpg");
   /* fallback for old browsers */
   background-size: cover;
-  // width: 100%;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   background-position: center;
   background-repeat: no-repeat;
   margin: 0;
