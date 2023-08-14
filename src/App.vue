@@ -38,7 +38,7 @@ const pirates = ref([
 ]);
 
 const questions = ref([[], [], [], [], []]);
-const bonusIndices = ref([])
+const bonusIndices = ref([]);
 axios
   .get(
     "https://sheets.googleapis.com/v4/spreadsheets/1XpAMwdU1gTYahErh1ny0k2a2TuLDhuIFvDE-s-hO0ag/values/0?alt=json&key=AIzaSyDR4LE-SY5jBNCMJ0HHgxJfgGd3amRyRmc"
@@ -46,7 +46,7 @@ axios
   .then((res) => {
     questions.value = res.data.values.reduce((acc, cur) => {
       const [first, ...rest] = cur;
-      bonusIndices.value.push(+rest[3])
+      bonusIndices.value.push(+rest[3]);
       return [...acc, [rest[0], rest[1], rest[2]]];
     }, []);
 
@@ -68,7 +68,7 @@ onBeforeMount(() => {
         turnAllBack();
         round.value += 1;
       } else {
-        round.value = 1
+        round.value = 1;
       }
     }
 
@@ -80,7 +80,7 @@ onBeforeMount(() => {
 
     // 0: resume game
     if (e.keyCode === 48 || e.keyCode === 96) {
-      round.value = 1
+      round.value = 1;
       return;
     }
 
@@ -96,6 +96,11 @@ onBeforeMount(() => {
     }
   });
 });
+
+const isChinese = (str) => {
+  const pattern = new RegExp("[\u4E00-\u9FA5]+");
+  return pattern.test(str);
+};
 </script>
 
 <template>
@@ -106,20 +111,46 @@ onBeforeMount(() => {
     <h1 class="">ROUND {{ round }}</h1>
     <div class="img-container">
       <div class="img-wrapper" v-for="(i, index) in pirates">
-        <img v-show="!i.isTurn && bonusIndices[round - 1] !== index + 1" :src="i.back" />
-        <img v-show="i.isTurn && bonusIndices[round - 1] !== index + 1" :src="i.front" />
+        <img
+          v-show="!i.isTurn && bonusIndices[round - 1] !== index + 1"
+          :src="i.back"
+        />
+        <img
+          v-show="i.isTurn && bonusIndices[round - 1] !== index + 1"
+          :src="i.front"
+        />
 
-        <img v-show="!i.isTurn && bonusIndices[round - 1] === index + 1" :src="i.bonus_back" />
-        <img v-show="i.isTurn && bonusIndices[round - 1] === index + 1" :src="i.bonus_front" />
-        <span v-if="i.isTurn" :style="questions[round - 1][index].length > 5 ? { fontSize: '6vw'} : questions[round - 1][index].length >= 3 ? { fontSize: '9vw'} :{ fontSize: '12vw'}  ">{{ questions[round - 1].length > 0 ? questions[round - 1][index] : '' }}</span>
+        <img
+          v-show="!i.isTurn && bonusIndices[round - 1] === index + 1"
+          :src="i.bonus_back"
+        />
+        <img
+          v-show="i.isTurn && bonusIndices[round - 1] === index + 1"
+          :src="i.bonus_front"
+        />
+        <span
+          v-if="i.isTurn"
+          :style="
+            questions[round - 1][index].length > 5
+              ? { fontSize: '5vw', color: '#1d3760', '-webkit-text-stroke': '0px' }
+              : questions[round - 1][index].length >= 2
+              ? { fontSize: '9vw', color: '#1d3760', '-webkit-text-stroke': '0px' }
+              : { fontSize: '12vw' }
+          "
+          >{{
+            questions[round - 1].length > 0 ? questions[round - 1][index] : ""
+          }}</span
+        >
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&display=swap');
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  
+  font-family: 'Noto Sans TC', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -152,7 +183,7 @@ body {
 
   h1 {
     font-size: 8rem;
-    font-weight: bold;
+    font-weight: 900;
     color: rgb(80, 61, 61);
     margin: 0;
   }
@@ -174,7 +205,7 @@ body {
         width: 100%;
         text-align: center;
         font-size: 12vw;
-        font-weight: bold;
+        font-weight: 900;
         color: #fff;
 
         // text-shadow: 5px 5px 0 #1d3760, -1px -1px 0 #1d3760, 1px -1px 0 #1d3760, -1px 1px 0 #1d3760, 1px 1px 0 #1d3760;
@@ -289,4 +320,5 @@ body {
   100% {
     opacity: 1;
   }
-}</style>
+}
+</style>
