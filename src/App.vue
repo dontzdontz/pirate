@@ -150,7 +150,7 @@ const isChinese = (str) => {
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
 #app {
   
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: 'Noto Sans TC', Arial, "Arial", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
