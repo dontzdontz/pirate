@@ -180,11 +180,11 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   h1 {
-    font-size: 8rem;
+    font-size: 6rem;
     font-weight: bold;
     color: rgb(80, 61, 61);
     margin: 0;
@@ -192,7 +192,7 @@ body {
 
   .img-container {
     display: grid;
-    grid-template-columns: repeat(3, 28vw);
+    grid-template-columns: repeat(3, 31vw);
     gap: 8px;
     justify-content: center;
 
